@@ -104,4 +104,18 @@ class TicketsApi extends OctadeskApi
 
         return $response;
     }
+
+    /**
+     * Get interactions for a ticket.
+     *
+     * @param integer $ticketNumber
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    public function getInteractions($number)
+    {
+        $this->setEndpoint("/tickets/$number/interactions")->setGet();
+
+        return $this->queryApi();
+    }
 }
