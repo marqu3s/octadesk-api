@@ -4,7 +4,7 @@
  * Date: 07/05/24
  */
 
-namespace marqu3s\octadeskApiV1;
+namespace marqu3s\octadeskApi;
 
 /**
  * Class ContactsApi
