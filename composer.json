@@ -1,0 +1,31 @@
+{
+  "name": "marqu3s/octadesk-api",
+  "description": "PHP client for Octadesk API.",
+  "keywords": [
+    "octadesk",
+    "api",
+    "ticket",
+    "whastapp",
+    "support",
+    "help",
+    "bot"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "marqu3s\\octadeskApi\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Joao Marques",
+      "email": "joao@jjmf.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.0.0",
+    "guzzlehttp/guzzle": "^7.0"
+  }
+}
