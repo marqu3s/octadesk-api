@@ -96,7 +96,7 @@ class ContactsApi extends OctadeskApi
     public function update($uuid, $bodyFields)
     {
         if ($this->apiVersion === OctadeskApi::API_V0) {
-            $this->setEndpoint("/person/$uuid");
+            $this->setEndpoint("/persons/$uuid");
         } else {
             $this->setEndpoint("/contacts/$uuid");
         }
@@ -120,7 +120,7 @@ class ContactsApi extends OctadeskApi
     public function getById($uuid)
     {
         if ($this->apiVersion === OctadeskApi::API_V0) {
-            $this->setEndpoint("/person/$uuid");
+            $this->setEndpoint("/persons/$uuid");
         } else {
             $this->setEndpoint("/contacts/$uuid");
         }
@@ -143,7 +143,7 @@ class ContactsApi extends OctadeskApi
     public function getByEmail($email)
     {
         if ($this->apiVersion === OctadeskApi::API_V0) {
-            $this->setEndpoint('/person');
+            $this->setEndpoint('/persons');
         } else {
             $this->setEndpoint('/contacts');
         }
@@ -154,6 +154,41 @@ class ContactsApi extends OctadeskApi
             'property' => 'email',
             'operator' => 'eq',
             'value' => htmlentities($email),
+        ];
+
+        $response = $this->queryApi();
+
+        return $response;
+    }
+
+    /**
+     * Get a contact by phone number.
+     *
+     * @param string $countryCode (2 digits)
+     * @param string $phoneNumber
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     * @see https://api.octadesk.services/docs/#/person/getPersonByEmail
+     */
+    public function getByPhoneNumber($countryCode, $phoneNumber)
+    {
+        if ($this->apiVersion === OctadeskApi::API_V0) {
+            $this->setEndpoint('/persons/filter')->setPost();
+        } else {
+            $this->setEndpoint('/contacts')->setGet();
+        }
+
+        $this->filters = [
+            [
+                'property' => 'phoneContacts.countryCode',
+                'operator' => OctadeskApi::FILTER_OPERATOR_EQ,
+                'value' => $countryCode,
+            ],
+            [
+                'property' => 'phoneContacts.number',
+                'operator' => OctadeskApi::FILTER_OPERATOR_EQ,
+                'value' => $phoneNumber,
+            ],
         ];
 
         $response = $this->queryApi();
