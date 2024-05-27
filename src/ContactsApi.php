@@ -76,7 +76,13 @@ class ContactsApi extends OctadeskApi
      */
     public function create($bodyFields)
     {
-        $this->setEndpoint('/contacts')->setPost();
+        if ($this->apiVersion === OctadeskApi::API_V0) {
+            $this->setEndpoint('/persons');
+        } else {
+            $this->setEndpoint('/contacts');
+        }
+        
+        $this->setPost();
         $this->bodyFields = $bodyFields;
 
         $response = $this->queryApi();
