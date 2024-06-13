@@ -69,7 +69,7 @@ class ContactsApi extends OctadeskApi
     /**
      * Creats a new contact.
      *
-     * @param array $postFields
+     * @param array $bodyFields
      *
      * @return Psr\Http\Message\ResponseInterface
      * @see https://developers.octadesk.com/reference/addcontact
@@ -81,7 +81,7 @@ class ContactsApi extends OctadeskApi
         } else {
             $this->setEndpoint('/contacts');
         }
-        
+
         $this->setPost();
         $this->bodyFields = $bodyFields;
 
@@ -94,7 +94,7 @@ class ContactsApi extends OctadeskApi
      * Updates a contact.
      *
      * @param string $uuid
-     * @param array $postFields
+     * @param array $bodyFields
      *
      * @return Psr\Http\Message\ResponseInterface
      * @see https://api.octadesk.services/docs/#/person/updatePerson
@@ -108,6 +108,31 @@ class ContactsApi extends OctadeskApi
         }
 
         $this->setPut();
+        $this->bodyFields = $bodyFields;
+
+        $response = $this->queryApi();
+
+        return $response;
+    }
+
+    /**
+     * Patch a contact, updating only the fields passed in the body.
+     *
+     * @param string $uuid
+     * @param array $bodyFields
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     * @see https://api.octadesk.services/docs/#/person/updatePerson
+     */
+    public function patch($uuid, $bodyFields)
+    {
+        if ($this->apiVersion === OctadeskApi::API_V0) {
+            throw new \Exception('PATCH method not allowed in API V0');
+        } else {
+            $this->setEndpoint("/contacts/$uuid");
+        }
+
+        $this->setPatch();
         $this->bodyFields = $bodyFields;
 
         $response = $this->queryApi();
