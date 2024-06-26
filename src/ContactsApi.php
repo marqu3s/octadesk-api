@@ -43,6 +43,7 @@ class ContactsApi extends OctadeskApi
 
     /**
      * Search for contacts.
+     * NOTE: This function is for API V1 only.
      *
      * @param array $filters
      * @param array $sort
@@ -225,5 +226,60 @@ class ContactsApi extends OctadeskApi
         $response = $this->queryApi();
 
         return $response;
+    }
+
+    /**
+     * Get all agents.
+     * NOTE: This function is for API V0 only.
+     *
+     * @param string $emailOrName
+     * @param string $page
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     * @see https://api.octadesk.services/docs/#/person/getEmployees
+     */
+    public function getAgents($emailOrName = null, $page = 1, $detailed = false)
+    {
+        $this->setEndpoint('/persons/agents')->setGet();
+
+        $this->page = $page;
+
+        $this->filters = [
+            [
+                'property' => 'keywork',
+                'operator' => 'eq',
+                'value' => htmlentities($emailOrName),
+            ],
+            [
+                'property' => 'detailed',
+                'operator' => 'eq',
+                'value' => htmlentities($detailed),
+            ],
+        ];
+
+        $response = $this->queryApi();
+
+        return $response;
+    }
+
+    /**
+     * Updates an agent avatar URL.
+     * NOTE: This function is for API V0 only.
+     *
+     * @param string $uuid
+     * @param string $email
+     * @param string $url
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     * @see https://api.octadesk.services/docs/#/person/updatePerson
+     */
+    public function updateAvatarUrl($uuid, $email, $url)
+    {
+        $this->setEndpoint("/persons/$uuid")->setPut();
+
+        $this->postFields['email'] = $email;
+        $this->postFields['thumbUrl'] = $url;
+
+        return $this->queryApi();
     }
 }
