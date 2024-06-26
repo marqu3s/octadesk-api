@@ -28,6 +28,14 @@ class TicketsApi extends OctadeskApi
     const TICKET_STATUS_CANCELED = 'cancelado';
     const TICKET_STATUS_CANCELED_UUID = '0cac3ff6-6039-4581-a727-c4dff94d5367';
 
+    const TICKET_SORTBY_NUMBER = 'number';
+    const TICKET_SORTBY_LASTDATEUPDATE = 'lastDateUpdate';
+    const TICKET_SORTBY_OPENDATE = 'openDate';
+    const TICKET_SORTBY_SLADUEDATE = 'slaDueDate';
+
+    const TICKET_SORTDIRECTION_ASC = 'asc';
+    const TICKET_SORTDIRECTION_DESC = 'desc';
+
     /**
      * @param array $filters
      * @param array $sort
