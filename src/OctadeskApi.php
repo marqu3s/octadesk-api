@@ -7,15 +7,16 @@
 namespace marqu3s\octadeskApi;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\RequestInterface;
 
 abstract class OctadeskApi
 {
     const FILTER_OPERATOR_EQ = 'eq'; // equal
     const FILTER_OPERATOR_NE = 'ne'; // not equal
     const FILTER_OPERATOR_GT = 'gt'; // greater than
-    const FILTER_OPERATOR_GE = 'ge'; // greater than or equal
+    const FILTER_OPERATOR_GE = 'ge'; // greater than or equals
     const FILTER_OPERATOR_LT = 'lt'; // less than
-    const FILTER_OPERATOR_LE = 'le'; // less than or equal
+    const FILTER_OPERATOR_LE = 'le'; // less than or equals
     const FILTER_OPERATOR_IN = 'in'; // in
     const FILTER_OPERATOR_NIN = 'nin'; // not in
 
@@ -245,12 +246,17 @@ abstract class OctadeskApi
         foreach ($this->filters as $i => $filter) {
             $value = $filter['value'];
             switch ($filter['operator']) {
+                case self::FILTER_OPERATOR_GE:
                 case self::FILTER_OPERATOR_GT:
                     $value = '>' . $value;
+                    break;
+                case self::FILTER_OPERATOR_LE:
                 case self::FILTER_OPERATOR_LT:
                     $value = '<' . $value;
+                    break;
                 case self::FILTER_OPERATOR_NE:
                     $value = '!' . $value;
+                    break;
             }
             $query[$filter['property']] = $value;
         }
