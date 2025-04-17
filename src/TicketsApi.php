@@ -115,6 +115,11 @@ class TicketsApi extends OctadeskApi
 
         $this->setEndpoint("/tickets/$number")->setGet();
 
+        $this->filters = [];
+        $this->sort = [];
+        $this->page = null;
+        $this->limit = null;
+
         $response = $this->queryApi();
 
         return $response;
@@ -130,6 +135,11 @@ class TicketsApi extends OctadeskApi
     public function getInteractions($number)
     {
         $this->setEndpoint("/tickets/$number/interactions")->setGet();
+
+        $this->filters = [];
+        $this->sort = [];
+        $this->page = null;
+        $this->limit = null;
 
         return $this->queryApi();
     }
