@@ -162,30 +162,56 @@ abstract class OctadeskApi
         return $this;
     }
 
+    /**
+     * Returns the total number of items found with the filters.
+     * In the v0.0.1, when combined with `searchId`, the total number of items is not returned.
+     * In this case, null is returned and your application must control pagination settings.
+     *
+     * @return int|null The total number of items found with the filters.
+     */
     public function getTotalItems()
     {
         if ($this->response === null) {
             return null;
         }
 
+        $headers = $this->response->getHeaders();
+
         if ($this->apiVersion === self::API_V1) {
-            return $this->response->getHeaders()['X-Total-Items'][0];
+            return (int) $headers['X-Total-Items'][0];
         }
 
-        return $this->response->getHeaders()['total-count'][0];
+        if (!isset($headers['total-count'])) {
+            return null;
+        }
+
+        return (int) $headers['total-count'][0];
     }
 
+    /**
+     * Returns the total number of pages found with the filters.
+     * In the v0.0.1, when combined with `searchId`, the total number of pages is not returned.
+     * In this case, null is returned and your application must control pagination settings.
+     *
+     * @return int|null The total number of pages found with the filters.
+     */
     public function getTotalPages()
     {
         if ($this->response === null) {
             return null;
         }
 
+        $headers = $this->response->getHeaders();
+
         if ($this->apiVersion === self::API_V1) {
-            return $this->response->getHeaders()['X-Total-Pages'][0];
+            return (int) $headers['X-Total-Pages'][0];
         }
 
-        return $this->response->getHeaders()['total-pages'][0];
+        if (!isset($headers['total-pages'])) {
+            return null;
+        }
+
+        return (int) $headers['total-pages'][0];
     }
 
     public function getSearchId()
@@ -194,7 +220,9 @@ abstract class OctadeskApi
             return null;
         }
 
-        return $this->response->getHeaders()['search-id'][0];
+        $headers = $this->response->getHeaders();
+
+        return $headers['search-id'][0];
     }
 
     /**
